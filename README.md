@@ -1,6 +1,6 @@
 # Guide d'installation d'OpenFn
 
-Une copie de la stack OpenFn Lightning à faire tourner sur votre propre machine. Même configuration que la production madagascar, sauf que les images de monitoring viennent du Docker Hub public au lieu de `dhi.io`, donc aucun accès spécial n'est nécessaire.
+Une copie de la stack OpenFn Lightning à faire tourner sur votre propre machine. Même configuration que le déploiement local en production pour Madagascar, sauf que les images de monitoring viennent du Docker Hub public au lieu de `dhi.io`, donc aucun accès spécial n'est nécessaire.
 
 À la fin de ce guide vous aurez :
 
@@ -43,7 +43,7 @@ Les sections marquées **OPTIONNEL** sont des ajouts que vous pouvez passer.
 
 ## 1. Vue d'ensemble de l'architecture
 
-💬 **Contexte :** Avant d'installer quoi que ce soit, voici ce qu'on va lancer. C'est exactement la même stack que sur le serveur Niger, sans la partie publique exposée à Internet.
+💬 **Contexte :** Avant d'installer quoi que ce soit, voici ce qu'on va lancer. C'est exactement la même stack que sur le serveur Madagascar, sans la partie publique exposée à Internet.
 
 ```mermaid
 flowchart TB
@@ -95,7 +95,7 @@ Points clés :
 - **Caddy** est un reverse proxy. C'est par lui que le navigateur communique avec Lightning et Grafana.
 - La **stack de monitoring** (Prometheus, Loki, Grafana, Alloy, cAdvisor, postgres-exporter) est utile mais pas indispensable au fonctionnement de Lightning.
 
-Sur le **serveur Niger en production**, il y a un reverse proxy externe supplémentaire qui gère le SSL et redirige `openfn.msppas.ne` vers ce Caddy. Localement, on saute cette partie.
+Sur le **serveur Madagascar en production**, il y a un reverse proxy externe supplémentaire qui gère le SSL et redirige `openfn.msppas.ne` vers ce Caddy. Localement, on saute cette partie.
 
 ## 2. Prérequis
 
@@ -186,7 +186,7 @@ cd madagascar-deployment-training
 
 À partir d'ici, toutes les commandes sont lancées depuis le dossier `madagascar-deployment-training/`.
 
-💬 **Contexte :** Ce dépôt contient une copie pédagogique de la configuration Lightning utilisée en production sur le serveur Niger. Elle utilise des images Docker publiques (au lieu des images "hardened" de Niger) et embarque le script `generate_secrets` qui permet de partir de zéro. Aucun accès spécial requis.
+💬 **Contexte :** Ce dépôt contient une copie pédagogique de la configuration Lightning utilisée en production sur le serveur Madagascar. Elle utilise des images Docker publiques (au lieu des images "hardened" de Madagascar) et embarque le script `generate_secrets` qui permet de partir de zéro. Aucun accès spécial requis.
 
 > 💡 **S'authentifier auprès de GitHub.** Pour cloner un dépôt privé, votre Git local doit pouvoir prouver votre identité à GitHub. Deux options :
 >
@@ -327,7 +327,7 @@ Connectez-vous avec :
 
 💬 **Contexte :**
 
-Lightning embarque une stack de monitoring déjà câblée. C'est ce qui tourne en production sur le serveur Niger.
+Lightning embarque une stack de monitoring déjà câblée. C'est ce qui tourne en production sur le serveur Madagascar.
 
 1. **Dashboards → Browse**, vous trouverez les dashboards auto-provisionnés :
    - `web` : requêtes HTTP, latence, taux d'erreur de Lightning.
@@ -468,7 +468,7 @@ SMTP_PASSWORD=<votre SMTP password SES>
 
 Les credentials SMTP de SES sont **différents** de vos credentials AWS habituels. Vous les générez depuis la console SES (IAM → Create SMTP credentials). Pensez aussi à vérifier votre domaine d'envoi dans SES avant de l'utiliser.
 
-#### OVH (c'est ce que Niger utilise en production)
+#### OVH (c'est ce que Madagascar utilise en production)
 
 ```ini
 MAIL_PROVIDER=smtp
@@ -625,7 +625,7 @@ GITHUB_CERT=<sortie base64 de l'étape 10.3>
 REPO_CONNECTION_SIGNING_SECRET=<lancer `openssl rand -base64 32` pour générer>
 ```
 
-`GITHUB_APP_NAME` est le slug public de l'app (le nom dans l'URL `github.com/apps/<slug>`). Si votre app s'appelle "OpenFn Lightning Niger", le slug est `openfn-lightning-madagascar`.
+`GITHUB_APP_NAME` est le slug public de l'app (le nom dans l'URL `github.com/apps/<slug>`). Si votre app s'appelle "OpenFn Lightning Madagascar", le slug est `openfn-lightning-madagascar`.
 
 ### 10.5 Recréer Lightning
 
@@ -747,7 +747,7 @@ On a utilisé Mailtrap dans §9. En production, vous remplacez par un vrai fourn
 
 ### 11.4 Les images de monitoring
 
-Dans `compose/monitoring.yml` on utilise des images publiques (`grafana/grafana`, `prom/prometheus`, etc.). Le serveur Niger en production utilise des **Docker Hardened Images** (DHI) depuis `dhi.io/*`. Même logiciel, mais avec des builds durcis à surface d'attaque plus réduite.
+Dans `compose/monitoring.yml` on utilise des images publiques (`grafana/grafana`, `prom/prometheus`, etc.). Le serveur Madagascar en production utilise des **Docker Hardened Images** (DHI) depuis `dhi.io/*`. Même logiciel, mais avec des builds durcis à surface d'attaque plus réduite.
 
 Pour basculer, remplacez chaque `grafana/grafana:X.Y.Z` par `dhi.io/grafana:X.Y.Z-debian13`, puis faites `docker login` avec un compte Docker Hub approuvé pour DHI, puis `docker compose pull && docker compose up -d`.
 
@@ -1067,7 +1067,7 @@ docker stats
 
 #### Combien d'utilisateurs et de workflows Lightning peut-il supporter ?
 
-Lightning scale horizontalement. Sur une VM 4 vCPU / 8 Go (configuration Niger), comptez :
+Lightning scale horizontalement. Sur une VM 4 vCPU / 8 Go (configuration Madagascar), comptez :
 
 - **Utilisateurs** : centaines sans souci (limité par Postgres, pas par Lightning).
 - **Workflows actifs** : centaines sans souci.
