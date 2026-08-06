@@ -1,0 +1,1438 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "datasource": {
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "#73BF69",
+        "limit": 100,
+        "name": "PromEx service start",
+        "showIn": 0,
+        "tags": [
+          "prom_ex",
+          "lightning",
+          "start"
+        ],
+        "type": "tags"
+      },
+      {
+        "datasource": {
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "#FF9830",
+        "limit": 100,
+        "name": "PromEx service stop",
+        "showIn": 0,
+        "tags": [
+          "prom_ex",
+          "lightning",
+          "stop"
+        ],
+        "type": "tags"
+      }
+    ]
+  },
+  "description": "All the data that is presented here is captured by the PromEx Phoenix plugin (https://github.com/akoutmos/prom_ex/blob/master/lib/prom_ex/plugins/phoenix.ex)",
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": 6,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "bolt",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Sponsor PromEx",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://github.com/sponsors/akoutmos"
+    },
+    {
+      "asDropdown": false,
+      "icon": "doc",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Phoenix Plugin Docs",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://hexdocs.pm/prom_ex/PromEx.Plugins.Phoenix.html"
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 19,
+      "panels": [],
+      "title": "Overview",
+      "type": "row"
+    },
+    {
+      "datasource": {},
+      "description": "The Phoenix Endpoint module currently active for config metrics.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 1
+      },
+      "id": 32,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "/^endpoint$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "lightning_prom_ex_phoenix_endpoint_port_info{job=\"$job\", instance=\"$instance\", endpoint=\"$endpoint\"}",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Server Endpoint",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {}
+        },
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {},
+      "description": "The port that the server is listening on.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 1
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "/^port$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "lightning_prom_ex_phoenix_endpoint_port_info{job=\"$job\", instance=\"$instance\", endpoint=\"$endpoint\"}",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Server Port",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {}
+        },
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {},
+      "description": "The URL that the server is configured to be accessed from.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "id": 31,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^url$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "exemplar": true,
+          "expr": "lightning_prom_ex_phoenix_endpoint_url_info{job=\"$job\", instance=\"$instance\", endpoint=\"$endpoint\"}",
+          "format": "table",
+          "interval": "",
+          "legendFormat": "",
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Server URL",
+      "type": "stat"
+    },
+    {
+      "datasource": {},
+      "description": "The Apdex score of the app based on a satisfactory response time of 500ms and a tolerable response time of 1000ms. This only takes into account how long Phoenix has been handling the request and only requests that resulted in a 2xx status code. The score is based on the last 24 hours of requests.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "noValue": "No data",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "green",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 5
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "(\n  (\n    sum(increase(lightning_prom_ex_phoenix_http_request_duration_milliseconds_bucket{job=\"$job\", instance=\"$instance\", le=\"500\", status=~\"2..\"}[24h])) + \n    (sum(increase(lightning_prom_ex_phoenix_http_request_duration_milliseconds_bucket{job=\"$job\", instance=\"$instance\", le=\"1000\", status=~\"2..\"}[24h])) - sum(increase(lightning_prom_ex_phoenix_http_request_duration_milliseconds_bucket{job=\"$job\", instance=\"$instance\", le=\"500\", status=~\"2..\"}[24h]))) / 2\n  ) \n  / \n  sum(increase(lightning_prom_ex_phoenix_http_request_duration_milliseconds_count{job=\"$job\", instance=\"$instance\", status=~\"2..\"}[24h]))\n) * 100",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Apdex Score (Last 24h)",
+      "type": "stat"
+    },
+    {
+      "datasource": {},
+      "description": "A percentage of responses that resulted in 400s or 500s over the past 24 hours.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 5
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "sum(increase(lightning_prom_ex_phoenix_http_requests_total{job=\"$job\", instance=\"$instance\", status=~\"4..|5..\"}[24h])) / sum(increase(lightning_prom_ex_phoenix_http_requests_total{job=\"$job\", instance=\"$instance\"}[24h])) OR on() vector(0)",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Error Percentage (Last 24h)",
+      "type": "stat"
+    },
+    {
+      "datasource": {},
+      "description": "The amount of data transferred by Phoenix in a 24 hour rolling window.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 5
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "sum(increase(lightning_prom_ex_phoenix_http_response_size_bytes_sum{job=\"$job\", instance=\"$instance\"}[24h]))",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Data Transferred (Last 24h)",
+      "type": "stat"
+    },
+    {
+      "datasource": {},
+      "description": "The amount of requests received by Phoenix in a 24 hour rolling window.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 5
+      },
+      "id": 23,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "round(sum(increase(lightning_prom_ex_phoenix_http_requests_total{job=\"$job\", instance=\"$instance\"}[24h])))",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Requests Received (Last 24h)",
+      "type": "stat"
+    },
+    {
+      "datasource": {},
+      "description": "The Apdex score of the app based on a satisfactory response time of 500ms and a tolerable response time of 1000ms. This only takes into account how long Phoenix has been handling the request and only requests that resulted in a 2xx status code. The score is based on the previous hour of requests.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "noValue": "No data",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "green",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 11
+      },
+      "id": 25,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "(\n  (\n    sum(increase(lightning_prom_ex_phoenix_http_request_duration_milliseconds_bucket{job=\"$job\", instance=\"$instance\", le=\"500\", status=~\"2..\"}[1h])) + \n    (sum(increase(lightning_prom_ex_phoenix_http_request_duration_milliseconds_bucket{job=\"$job\", instance=\"$instance\", le=\"1000\", status=~\"2..\"}[1h])) - sum(increase(lightning_prom_ex_phoenix_http_request_duration_milliseconds_bucket{job=\"$job\", instance=\"$instance\", le=\"500\", status=~\"2..\"}[1h]))) / 2\n  ) \n  / \n  sum(increase(lightning_prom_ex_phoenix_http_request_duration_milliseconds_count{job=\"$job\", instance=\"$instance\", status=~\"2..\"}[1h]))\n) * 100",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Apdex Score (Last 1h)",
+      "type": "stat"
+    },
+    {
+      "datasource": {},
+      "description": "A percentage of responses that resulted in 400s or 500s over the past hour.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "noValue": "No data",
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 11
+      },
+      "id": 26,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "sum(increase(lightning_prom_ex_phoenix_http_requests_total{job=\"$job\", instance=\"$instance\", status=~\"4..|5..\"}[1h])) / sum(increase(lightning_prom_ex_phoenix_http_requests_total{job=\"$job\", instance=\"$instance\"}[1h])) OR on() vector(0)",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Error Percentage (Last 1h)",
+      "type": "stat"
+    },
+    {
+      "datasource": {},
+      "description": "The amount of data transferred by Phoenix in the past hour.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 11
+      },
+      "id": 27,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "sum(increase(lightning_prom_ex_phoenix_http_response_size_bytes_sum{job=\"$job\", instance=\"$instance\"}[1h]))",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Data Transferred (Last 1h)",
+      "type": "stat"
+    },
+    {
+      "datasource": {},
+      "description": "The amount of requests received by Phoenix in the past hour.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 11
+      },
+      "id": 28,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "round(sum(increase(lightning_prom_ex_phoenix_http_requests_total{job=\"$job\", instance=\"$instance\"}[1h])))",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Requests Received (Last 1h)",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 2,
+      "panels": [],
+      "title": "HTTP Details",
+      "type": "row"
+    },
+    {
+      "datasource": {},
+      "description": "A heatmap showing the request time spread across all requests (regardless of path).",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 6,
+      "options": {
+        "calculate": false,
+        "calculation": {},
+        "cellGap": 2,
+        "cellValues": {},
+        "color": {
+          "exponent": 0.5,
+          "fill": "#b4ff00",
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "showValue": "never",
+        "tooltip": {
+          "mode": "single",
+          "showColorScale": false,
+          "yHistogram": true
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false,
+          "unit": "ms"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "sum(irate(lightning_prom_ex_phoenix_http_request_duration_milliseconds_bucket{job=\"$job\", instance=\"$instance\"}[$interval])) by (le)",
+          "format": "heatmap",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{ le }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Request Time",
+      "type": "heatmap"
+    },
+    {
+      "datasource": {},
+      "description": "A heatmap showing the response payload size spread across all requests (regardless of path).",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "id": 12,
+      "options": {
+        "calculate": false,
+        "calculation": {},
+        "cellGap": 2,
+        "cellValues": {},
+        "color": {
+          "exponent": 0.5,
+          "fill": "#b4ff00",
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "showValue": "never",
+        "tooltip": {
+          "mode": "single",
+          "showColorScale": false,
+          "yHistogram": true
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false,
+          "unit": "decbytes"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "sum(irate(lightning_prom_ex_phoenix_http_response_size_bytes_bucket{job=\"$job\", instance=\"$instance\"}[$interval])) by (le)",
+          "format": "heatmap",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{ le }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Response Payload Size",
+      "type": "heatmap"
+    },
+    {
+      "datasource": {},
+      "description": "The average request time per path per status code per HTTP method.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 31
+      },
+      "id": 11,
+      "options": {},
+      "pluginVersion": "7.1.3",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "sum(irate(lightning_prom_ex_phoenix_http_request_duration_milliseconds_sum{job=\"$job\", instance=\"$instance\"}[$interval])) by(path, status) / sum(irate(lightning_prom_ex_phoenix_http_request_duration_milliseconds_count{job=\"$job\", instance=\"$instance\"}[$interval])) by(path, status)",
+          "interval": "",
+          "legendFormat": "{{ method }} {{ path }} :: {{ status }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Average HTTP Request Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {},
+      "description": "The average response size per path per status code per HTTP method.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 31
+      },
+      "id": 13,
+      "options": {},
+      "pluginVersion": "7.1.3",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "sum(irate(lightning_prom_ex_phoenix_http_response_size_bytes_sum{job=\"$job\", instance=\"$instance\"}[$interval])) by(path, status) / sum(irate(lightning_prom_ex_phoenix_http_response_size_bytes_count{job=\"$job\", instance=\"$instance\"}[$interval])) by(path, status)",
+          "interval": "",
+          "legendFormat": "{{ method }} {{ path }} :: {{ status }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Average HTTP Response Size",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {},
+      "description": "Shows the number of requests coming into certain paths and the resulting response codes.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 44
+      },
+      "id": 8,
+      "options": {},
+      "pluginVersion": "7.1.3",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "irate(lightning_prom_ex_phoenix_http_requests_total{job=\"$job\", instance=\"$instance\"}[$interval])",
+          "interval": "",
+          "legendFormat": "{{ method }} {{ path }} :: {{ status }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Path Requests",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {},
+      "description": "The aggregate response status of all the requests.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 44
+      },
+      "id": 10,
+      "options": {},
+      "pluginVersion": "7.1.3",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "sum(irate(lightning_prom_ex_phoenix_http_requests_total{status=~\"2..\", job=\"$job\", instance=\"$instance\"}[$interval]))",
+          "interval": "",
+          "legendFormat": "2xx",
+          "refId": "A"
+        },
+        {
+          "datasource": {},
+          "expr": "sum(irate(lightning_prom_ex_phoenix_http_requests_total{status=~\"4..\", job=\"$job\", instance=\"$instance\"}[$interval]))",
+          "interval": "",
+          "legendFormat": "4xx",
+          "refId": "B"
+        },
+        {
+          "datasource": {},
+          "expr": "sum(irate(lightning_prom_ex_phoenix_http_requests_total{status=~\"5..\", job=\"$job\", instance=\"$instance\"}[$interval]))",
+          "interval": "",
+          "legendFormat": "5xx",
+          "refId": "C"
+        }
+      ],
+      "title": "Response Status Codes",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 57
+      },
+      "id": 4,
+      "panels": [],
+      "title": "Channel Details",
+      "type": "row"
+    },
+    {
+      "datasource": {},
+      "description": "How many channel joins have occurred over time.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 58
+      },
+      "id": 15,
+      "options": {},
+      "pluginVersion": "7.1.3",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "irate(lightning_prom_ex_phoenix_channel_joined_total{job=\"$job\", instance=\"$instance\", endpoint=\"$endpoint\"}[$interval])",
+          "interval": "",
+          "legendFormat": "{{ transport }} :: {{ result }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Channel Join Events",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {},
+      "description": "A heatmap showing the request time spread across all channel events.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 58
+      },
+      "id": 16,
+      "options": {},
+      "pluginVersion": "7.1.3",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "sum(irate(lightning_prom_ex_phoenix_channel_handled_in_duration_milliseconds_bucket{job=\"$job\", instance=\"$instance\", endpoint=\"$endpoint\"}[$interval])) by (le)",
+          "format": "heatmap",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{ le }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Channel Message Handle Time",
+      "type": "heatmap"
+    },
+    {
+      "datasource": {},
+      "description": "The average response time for a channel message.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 71
+      },
+      "id": 17,
+      "options": {},
+      "pluginVersion": "7.1.3",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "irate(lightning_prom_ex_phoenix_channel_handled_in_duration_milliseconds_sum{job=\"$job\", instance=\"$instance\", endpoint=\"$endpoint\"}[$interval]) / irate(lightning_prom_ex_phoenix_channel_handled_in_duration_milliseconds_count{job=\"$job\", instance=\"$instance\", endpoint=\"$endpoint\"}[$interval])",
+          "interval": "",
+          "legendFormat": "{{ transport }} :: {{ result }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Average Channel Response Time",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 84
+      },
+      "id": 34,
+      "panels": [],
+      "title": "Socket Details",
+      "type": "row"
+    },
+    {
+      "datasource": {},
+      "description": "How many socket connections have occurred over time.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 85
+      },
+      "id": 35,
+      "options": {},
+      "pluginVersion": "7.1.3",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "irate(lightning_prom_ex_phoenix_socket_connected_duration_milliseconds_count{job=\"$job\", instance=\"$instance\", endpoint=\"$endpoint\"}[$interval])",
+          "interval": "",
+          "legendFormat": "{{ transport }} :: {{ result }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Socket Connection Events",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {},
+      "description": "A heatmap showing the request time spread across all socket connections.",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 85
+      },
+      "id": 36,
+      "options": {},
+      "pluginVersion": "7.1.3",
+      "targets": [
+        {
+          "datasource": {},
+          "exemplar": true,
+          "expr": "sum(irate(lightning_prom_ex_phoenix_socket_connected_duration_milliseconds_bucket{job=\"$job\", instance=\"$instance\", endpoint=\"$endpoint\"}[$interval])) by (le)",
+          "format": "heatmap",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{ le }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Socket Connection Time",
+      "type": "heatmap"
+    },
+    {
+      "datasource": {},
+      "description": "The average time it connects to establish a socket connection.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 98
+      },
+      "id": 37,
+      "options": {},
+      "pluginVersion": "7.1.3",
+      "targets": [
+        {
+          "datasource": {},
+          "expr": "irate(lightning_prom_ex_phoenix_socket_connected_duration_milliseconds_sum{job=\"$job\", instance=\"$instance\", endpoint=\"$endpoint\"}[$interval]) / irate(lightning_prom_ex_phoenix_socket_connected_duration_milliseconds_count{job=\"$job\", instance=\"$instance\", endpoint=\"$endpoint\"}[$interval])",
+          "interval": "",
+          "legendFormat": "{{ transport }} :: {{ result }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Average Socket Connection Time",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "5s",
+  "schemaVersion": 42,
+  "tags": [
+    "PromEx",
+    "Phoenix",
+    "lightning"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "lightning",
+          "value": "lightning"
+        },
+        "definition": "label_values(lightning_prom_ex_prom_ex_status_info, job)",
+        "includeAll": false,
+        "label": "Prometheus Job",
+        "name": "job",
+        "options": [],
+        "query": "label_values(lightning_prom_ex_prom_ex_status_info, job)",
+        "refresh": 2,
+        "regex": "",
+        "sort": 6,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "172.20.0.5:4000",
+          "value": "172.20.0.5:4000"
+        },
+        "definition": "label_values(lightning_prom_ex_prom_ex_status_info, instance)",
+        "includeAll": false,
+        "label": "Application Instance",
+        "name": "instance",
+        "options": [],
+        "query": "label_values(lightning_prom_ex_prom_ex_status_info{job=\"$job\"}, instance)",
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "LightningWeb.Endpoint",
+          "value": "LightningWeb.Endpoint"
+        },
+        "definition": "label_values(lightning_prom_ex_phoenix_endpoint_port_info, endpoint)",
+        "includeAll": false,
+        "label": "Phoenix Endpoint",
+        "name": "endpoint",
+        "options": [],
+        "query": "label_values(lightning_prom_ex_phoenix_endpoint_port_info, endpoint)",
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "auto": false,
+        "auto_count": 30,
+        "auto_min": "10s",
+        "current": {
+          "text": "30s",
+          "value": "30s"
+        },
+        "label": "Interval",
+        "name": "interval",
+        "options": [
+          {
+            "selected": false,
+            "text": "15s",
+            "value": "15s"
+          },
+          {
+            "selected": true,
+            "text": "30s",
+            "value": "30s"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "15m",
+            "value": "15m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          }
+        ],
+        "query": "15s,30s,1m,5m,15m,30m,1h",
+        "refresh": 2,
+        "type": "interval"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m"
+    ]
+  },
+  "timezone": "",
+  "title": "Lightning - PromEx Phoenix Dashboard",
+  "uid": "48D01973F2A35EF22F0063A608324AFD",
+  "version": 3
+}

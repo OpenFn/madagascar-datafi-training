@@ -1,0 +1,19 @@
+services:
+  proxy:
+    image: caddy:2.11.3
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy/certs:/etc/caddy/certs:ro
+      - proxy_data:/data
+    networks:
+      - frontend
+    depends_on:
+      lightning:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  frontend:
+
+volumes:
+  proxy_data:

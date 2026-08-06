@@ -1,0 +1,13 @@
+name: openfn
+
+include:
+  - path: compose/lightning.yml
+    project_directory: .
+  - path: compose/worker.yml
+    project_directory: .
+  - path:
+      - compose/rp.yml
+      - compose/rp.internal.yml
+    project_directory: .
+  - path: compose/monitoring.yml
+    project_directory: .

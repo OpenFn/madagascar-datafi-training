@@ -1,0 +1,399 @@
+apiVersion: 1
+groups:
+  # ─── Application Health ───────────────────────────────────────────
+  - orgId: 1
+    name: application
+    folder: Alerts
+    interval: 1m
+    rules:
+      - uid: lightning-down
+        title: Lightning Down
+        condition: C
+        for: 2m
+        noDataState: Alerting
+        execErrState: Alerting
+        annotations:
+          summary: Lightning is not responding to health checks.
+          description: "The Prometheus scrape target for Lightning has been down for more than 2 minutes."
+          runbook: "SSH into the server and run: docker compose logs lightning. Check if the container is running with: docker compose ps. Restart with: docker compose up -d lightning"
+        labels:
+          severity: critical
+          component: lightning
+        data:
+          - refId: A
+            datasourceUid: DS_PROMETHEUS
+            relativeTimeRange: { from: 300, to: 0 }
+            model:
+              expr: "up{job=\"lightning\"}"
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
+          - refId: C
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: threshold
+              expression: B
+              refId: C
+              conditions:
+                - evaluator: { type: lt, params: [1] }
+
+      - uid: postgresql-down
+        title: PostgreSQL Down
+        condition: C
+        for: 1m
+        noDataState: Alerting
+        execErrState: Alerting
+        annotations:
+          summary: PostgreSQL is unreachable.
+          description: "The Postgres exporter has been unable to connect to PostgreSQL for more than 1 minute. Lightning will not function without a database."
+          runbook: "SSH into the server and run: docker compose logs postgres. Check disk space. Restart with: docker compose up -d postgres"
+        labels:
+          severity: critical
+          component: postgres
+        data:
+          - refId: A
+            datasourceUid: DS_PROMETHEUS
+            relativeTimeRange: { from: 300, to: 0 }
+            model:
+              expr: "up{job=\"postgres\"}"
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
+          - refId: C
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: threshold
+              expression: B
+              refId: C
+              conditions:
+                - evaluator: { type: lt, params: [1] }
+
+      - uid: high-http-error-rate
+        title: High HTTP Error Rate
+        condition: C
+        for: 5m
+        noDataState: OK
+        execErrState: OK
+        annotations:
+          summary: Lightning is returning a high rate of 5xx errors.
+          description: "More than 5% of HTTP requests are returning server errors over the last 5 minutes."
+          runbook: "Check Lightning logs: docker compose logs lightning --tail 100. Look for recurring errors or stack traces."
+        labels:
+          severity: warning
+          component: lightning
+        data:
+          - refId: A
+            datasourceUid: DS_PROMETHEUS
+            relativeTimeRange: { from: 300, to: 0 }
+            model:
+              expr: "(sum(rate(phoenix_endpoint_stop_duration_milliseconds_count{status_class=\"5xx\"}[5m])) / sum(rate(phoenix_endpoint_stop_duration_milliseconds_count[5m]))) * 100"
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
+          - refId: C
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: threshold
+              expression: B
+              refId: C
+              conditions:
+                - evaluator: { type: gt, params: [5] }
+
+  # ─── Infrastructure ──────────────────────────────────────────────
+  - orgId: 1
+    name: infrastructure
+    folder: Alerts
+    interval: 1m
+    rules:
+      - uid: disk-usage-high
+        title: "Disk Usage > 85%"
+        condition: C
+        for: 5m
+        noDataState: OK
+        execErrState: Alerting
+        annotations:
+          summary: Disk usage is above 85%.
+          description: "The filesystem is filling up. If it reaches 100%, all services on this server will stop functioning. Loki logs and PostgreSQL WAL are common culprits."
+          runbook: "Check disk usage: df -h. Check Docker volumes: docker system df. Prune unused images: docker image prune -a."
+        labels:
+          severity: warning
+          component: host
+        data:
+          - refId: A
+            datasourceUid: DS_PROMETHEUS
+            relativeTimeRange: { from: 300, to: 0 }
+            model:
+              expr: "max(container_fs_usage_bytes{device=~\"/dev/.*\"} / container_fs_limit_bytes{device=~\"/dev/.*\"}) * 100"
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
+          - refId: C
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: threshold
+              expression: B
+              refId: C
+              conditions:
+                - evaluator: { type: gt, params: [85] }
+
+      - uid: disk-usage-critical
+        title: "Disk Usage > 95%"
+        condition: C
+        for: 2m
+        noDataState: OK
+        execErrState: Alerting
+        annotations:
+          summary: Disk usage is critically high (above 95%).
+          description: "Immediate action required. The server is about to run out of disk space."
+          runbook: "Emergency: free space immediately. docker image prune -a --force. Check for large log files. Consider stopping non-essential services."
+        labels:
+          severity: critical
+          component: host
+        data:
+          - refId: A
+            datasourceUid: DS_PROMETHEUS
+            relativeTimeRange: { from: 300, to: 0 }
+            model:
+              expr: "max(container_fs_usage_bytes{device=~\"/dev/.*\"} / container_fs_limit_bytes{device=~\"/dev/.*\"}) * 100"
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
+          - refId: C
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: threshold
+              expression: B
+              refId: C
+              conditions:
+                - evaluator: { type: gt, params: [95] }
+
+      - uid: container-memory-high
+        title: "Container Memory > 90%"
+        condition: C
+        for: 5m
+        noDataState: OK
+        execErrState: Alerting
+        annotations:
+          summary: A container is using more than 90% of its memory limit.
+          description: "If it hits the limit, Docker will OOM-kill the container. The worker has a 2GB limit."
+          runbook: "Check which container: docker stats --no-stream. If it is the worker, consider reducing concurrency or increasing the memory limit in docker-compose.yml."
+        labels:
+          severity: warning
+          component: container
+        data:
+          - refId: A
+            datasourceUid: DS_PROMETHEUS
+            relativeTimeRange: { from: 300, to: 0 }
+            model:
+              expr: "max((container_memory_usage_bytes{container_label_com_docker_compose_service=~\"lightning|worker|postgres\"} / container_spec_memory_limit_bytes{container_label_com_docker_compose_service=~\"lightning|worker|postgres\"}) * 100 and container_spec_memory_limit_bytes{container_label_com_docker_compose_service=~\"lightning|worker|postgres\"} > 0) by (container_label_com_docker_compose_service)"
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
+          - refId: C
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: threshold
+              expression: B
+              refId: C
+              conditions:
+                - evaluator: { type: gt, params: [90] }
+
+      - uid: container-restarted
+        title: Container Restarted
+        condition: C
+        for: 0s
+        noDataState: OK
+        execErrState: OK
+        annotations:
+          summary: A core container has restarted unexpectedly.
+          description: "This could indicate a crash (OOM, unhandled error) or a manual restart. Check the logs for the period leading up to the restart."
+          runbook: "Check logs: docker compose logs <service> --tail 200. Look for OOM killed in: dmesg | grep -i oom"
+        labels:
+          severity: warning
+          component: container
+        data:
+          - refId: A
+            datasourceUid: DS_PROMETHEUS
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: "max(increase(container_start_time_seconds{container_label_com_docker_compose_service=~\"lightning|worker|postgres\"}[10m])) by (container_label_com_docker_compose_service)"
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
+          - refId: C
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: threshold
+              expression: B
+              refId: C
+              conditions:
+                - evaluator: { type: gt, params: [0] }
+
+  # ─── Monitoring Stack Health ─────────────────────────────────────
+  - orgId: 1
+    name: monitoring-stack
+    folder: Alerts
+    interval: 1m
+    rules:
+      - uid: prometheus-down
+        title: Prometheus Down
+        condition: C
+        for: 2m
+        noDataState: Alerting
+        execErrState: Alerting
+        annotations:
+          summary: Prometheus is not scraping metrics.
+          description: "If Prometheus is down, no metrics are being collected and all other alerts will stop working. This is the most critical monitoring failure."
+          runbook: "SSH into the server and run: docker compose up -d prometheus. Check logs: docker compose logs prometheus"
+        labels:
+          severity: critical
+          component: monitoring
+        data:
+          - refId: A
+            datasourceUid: DS_PROMETHEUS
+            relativeTimeRange: { from: 300, to: 0 }
+            model:
+              expr: "up{job=\"prometheus\"}"
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
+          - refId: C
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: threshold
+              expression: B
+              refId: C
+              conditions:
+                - evaluator: { type: lt, params: [1] }
+
+      - uid: cadvisor-down
+        title: cAdvisor Down
+        condition: C
+        for: 5m
+        noDataState: Alerting
+        execErrState: OK
+        annotations:
+          summary: cAdvisor is not reporting container metrics.
+          description: "Container-level metrics (CPU, memory, disk per container) are not being collected. Dashboard panels will show 'No data'."
+          runbook: "Check if cAdvisor registered the Docker factory: docker compose logs cadvisor | grep -i docker. If you see 'Failed to create a Docker factory', restart: docker compose restart cadvisor"
+        labels:
+          severity: warning
+          component: monitoring
+        data:
+          - refId: A
+            datasourceUid: DS_PROMETHEUS
+            relativeTimeRange: { from: 300, to: 0 }
+            model:
+              expr: "up{job=\"cadvisor\"}"
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
+          - refId: C
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: threshold
+              expression: B
+              refId: C
+              conditions:
+                - evaluator: { type: lt, params: [1] }
+
+      - uid: loki-down
+        title: Loki Down
+        condition: C
+        for: 5m
+        noDataState: Alerting
+        execErrState: Alerting
+        annotations:
+          summary: Loki is not accepting logs.
+          description: "Container logs are no longer being collected. You will not be able to search logs in Grafana until Loki is restored. Existing logs are preserved in the volume."
+          runbook: "Restart Loki: docker compose up -d loki. Check logs: docker compose logs loki. If config error, check loki-config.yaml permissions (must be readable by UID 1000)."
+        labels:
+          severity: warning
+          component: monitoring
+        data:
+          - refId: A
+            datasourceUid: DS_PROMETHEUS
+            relativeTimeRange: { from: 300, to: 0 }
+            model:
+              expr: "up{job=\"loki\"}"
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
+          - refId: C
+            datasourceUid: __expr__
+            relativeTimeRange: { from: 0, to: 0 }
+            model:
+              type: threshold
+              expression: B
+              refId: C
+              conditions:
+                - evaluator: { type: lt, params: [1] }

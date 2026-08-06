@@ -1,0 +1,36 @@
+services:
+  worker:
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 2GB
+    image: openfn/ws-worker:v1.25.1
+    platform: linux/amd64
+    hostname: "{{.Name}}"
+    command: ["node", "./dist/start.js"]
+    depends_on:
+      lightning:
+        condition: service_healthy
+    env_file:
+      - ./worker/worker.env
+      - ./worker/worker.secrets.env
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:2222",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+    restart: unless-stopped
+
+networks:
+  backend:

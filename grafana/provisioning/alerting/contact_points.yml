@@ -1,0 +1,11 @@
+apiVersion: 1
+contactPoints:
+  - orgId: 1
+    name: openfn-alerts
+    receivers:
+      - uid: openfn-alerts-email
+        type: email
+        settings:
+          addresses: "rory@openfn.org,openfn@msppas.ne"
+          singleEmail: false
+        disableResolveMessage: false

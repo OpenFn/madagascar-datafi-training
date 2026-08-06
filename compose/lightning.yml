@@ -1,0 +1,69 @@
+x-lightning-image: &lightning-image openfn/lightning:v2.16.4
+
+services:
+  postgres:
+    deploy:
+      replicas: 1
+    image: postgres:16.6
+    environment:
+      POSTGRES_USER: lightning
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_DB: lightning
+    secrets:
+      - postgres_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lightning"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    restart: unless-stopped
+
+  migration:
+    image: *lightning-image
+    platform: linux/amd64
+    entrypoint: ["/app/bin/lightning", "eval", "Lightning.Release.migrate"]
+    env_file:
+      - ./lightning/web.env
+      - ./lightning/web.secrets.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - backend
+
+  lightning:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    image: *lightning-image
+    platform: linux/amd64
+    command: ["/app/bin/server"]
+    depends_on:
+      migration:
+        condition: service_completed_successfully
+    env_file:
+      - ./lightning/web.env
+      - ./lightning/web.secrets.env
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "localhost:4000/health_check"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - frontend
+      - backend
+    restart: unless-stopped
+
+networks:
+  backend:
+  frontend:
+
+volumes:
+  postgres_data:
+
+secrets:
+  postgres_password:
+    file: postgres/postgres_password.txt
