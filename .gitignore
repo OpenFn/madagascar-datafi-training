@@ -10,7 +10,7 @@ postgres/postgres_exporter.secrets.env
 prometheus/prometheus_lightning_token.txt
 worker/worker_runs_private_key.pem
 worker/worker_runs_public_key.pem
-
+ 
 # Local backups created by ./generate_secrets --force
 *.bak.*
 
