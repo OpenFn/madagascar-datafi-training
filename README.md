@@ -1,7 +1,7 @@
 # Guide d'installation d'OpenFn
 
 Une copie de la stack OpenFn Lightning à faire tourner sur votre propre machine. Même configuration que le déploiement local en production pour Madagascar, sauf que les images de monitoring viennent du Docker Hub public au lieu de `dhi.io`, donc aucun accès spécial n'est nécessaire.
-
+ 
 À la fin de ce guide vous aurez :
 
 - Lightning sur <http://localhost:4000>
