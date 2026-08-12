@@ -180,18 +180,18 @@ Si Git n'est pas installé :
 
 ```sh
 cd ~
-git clone https://github.com/OpenFn/madagascar-deployment-training.git
-cd madagascar-deployment-training
+git clone https://github.com/OpenFn/madagascar-datafi-training.git
+cd madagascar-datafi-training
 ```
 
-À partir d'ici, toutes les commandes sont lancées depuis le dossier `madagascar-deployment-training/`.
+À partir d'ici, toutes les commandes sont lancées depuis le dossier `madagascar-datafi-training/`.
 
 💬 **Contexte :** Ce dépôt contient une copie pédagogique de la configuration Lightning utilisée en production sur le serveur Madagascar. Elle utilise des images Docker publiques (au lieu des images "hardened" de Madagascar) et embarque le script `generate_secrets` qui permet de partir de zéro. Aucun accès spécial requis.
 
 > 💡 **S'authentifier auprès de GitHub.** Pour cloner un dépôt privé, votre Git local doit pouvoir prouver votre identité à GitHub. Deux options :
 >
 > - **HTTPS + Personal Access Token :** créez un token sur <https://github.com/settings/tokens> (scope `repo`), puis utilisez-le comme mot de passe quand Git vous le demande.
-> - **SSH :** générez une paire de clés (`ssh-keygen -t ed25519`), ajoutez la clé publique sur <https://github.com/settings/keys>, puis clonez avec `git clone git@github.com:OpenFn/madagascar-deployment-training.git`.
+> - **SSH :** générez une paire de clés (`ssh-keygen -t ed25519`), ajoutez la clé publique sur <https://github.com/settings/keys>, puis clonez avec `git clone git@github.com:OpenFn/madagascar-datafi-training.git`.
 >
 > SSH est généralement plus simple à long terme.
 
